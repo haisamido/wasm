@@ -1,4 +1,4 @@
-# wasm
+# Web Assembly: wasm
 
 ```bash
 make install-taskfile
