@@ -26,9 +26,9 @@ tasks:
     cmds:
       - emcc helloworld.c -o helloworld.html
 
-  open:
-    desc: Open the generated HTML file in the default web browser
+  run:
+    desc: run the generated HTML file in the default web browser
     deps:
       - compile:emcc
     cmds:
-      - open helloworld.html
+      - emrun helloworld.html
