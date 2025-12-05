@@ -1,0 +1,34 @@
+#brew install emscripten
+
+version: "3"
+
+dotenv:
+  - ./.env
+
+env:
+  CONTAINER_BIN: docker
+  CONTAINER_COMPOSE_BIN: " {{.CONTAINER_BIN}} compose "
+
+tasks:
+  default:
+    desc: Shows this help message
+    cmds:
+      - task --list-all
+    silent: true
+
+  compile:gcc:
+    desc: Compile C to WebAssembly using GCC
+    cmds:
+      - gcc -o helloworld helloworld.c
+
+  compile:emcc:
+    desc: Compile C to WebAssembly using Emscripten
+    cmds:
+      - emcc helloworld.c -o helloworld.html
+
+  open:
+    desc: Open the generated HTML file in the default web browser
+    deps:
+      - compile:emcc
+    cmds:
+      - open helloworld.html
