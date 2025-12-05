@@ -18,7 +18,7 @@ tasks:
       - task --list-all
     silent: true
 
-  build:docker:
+  docker:build:
     desc: Build Docker image with GCC
     cmds:
       - docker build -t wasm-gcc -f ${CONTAINER_FILE} .
@@ -42,10 +42,13 @@ tasks:
   docker:up:
     desc: Bring up Docker container
     deps:
-      - build:docker
+      - docker:build
       - docker:down
     cmds:
       - ${CONTAINER_COMPOSE_BIN} up -d wasm-helloworld
+      - echo
+      - echo open http://localhost:6931/helloworld.html
+      - echo
 
   docker:down:
     desc: Bring down Docker container
