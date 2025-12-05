@@ -9,7 +9,7 @@ make install-taskfile
 
 ```
 
-## 2
+## 2:
 
 ```bash
 task
@@ -30,16 +30,16 @@ task: Available tasks for this project:
 * run:local:               run the generated HTML file in the default web browser
 ```
 
-## 3
+## 3:
 
 ```bash
 task docker:up
 
 ```
 
-## 4
+## 4:
 
 ```bash
-open http://localhost:6931/helloword.html
+open http://localhost:6931/helloworld.html
 
 ```
