@@ -8,6 +8,8 @@ dotenv:
 env:
   CONTAINER_BIN: docker
   CONTAINER_COMPOSE_BIN: " {{.CONTAINER_BIN}} compose "
+  CONTAINER_FILE: "./ContainerFile"
+  COMPOSE_FILE: "./compose.yaml"
 
 tasks:
   default:
@@ -16,19 +18,43 @@ tasks:
       - task --list-all
     silent: true
 
+  build:docker:
+    desc: Build Docker image with GCC
+    cmds:
+      - docker build -t wasm-gcc -f ${CONTAINER_FILE} .
+      - ${CONTAINER_COMPOSE_BIN} -f ${COMPOSE_FILE} build --pull wasm-helloworld
+      
   compile:gcc:
     desc: Compile C to WebAssembly using GCC
     cmds:
       - gcc -o helloworld helloworld.c
 
-  compile:emcc:
-    desc: Compile C to WebAssembly using Emscripten
+  compile:emcc:html:
+    desc: Compile C to WebAssembly using Emscripten (HTML)
     cmds:
       - emcc helloworld.c -o helloworld.html
 
-  run:
+  compile:emcc:js:
+    desc: Compile C to WebAssembly using Emscripten (JS)
+    cmds:
+      - emcc helloworld.c -o helloworld.js
+
+  docker:up:
+    desc: Bring up Docker container
+    deps:
+      - build:docker
+      - docker:down
+    cmds:
+      - ${CONTAINER_COMPOSE_BIN} up -d wasm-helloworld
+
+  docker:down:
+    desc: Bring down Docker container
+    cmds:
+      - ${CONTAINER_COMPOSE_BIN} down
+
+  run:local:
     desc: run the generated HTML file in the default web browser
     deps:
-      - compile:emcc
+      - compile:emcc:html
     cmds:
       - emrun helloworld.html

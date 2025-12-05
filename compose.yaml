@@ -1,0 +1,11 @@
+services:
+  wasm-helloworld:
+    build:
+      context: .
+      dockerfile: ContainerFile
+    attach: true
+    container_name: wasm-helloworld
+    hostname: wasm-helloworld
+    command: '/entrypoint.sh'
+    ports:
+      - "127.0.0.1:6931:6931"
